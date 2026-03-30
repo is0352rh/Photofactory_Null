@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Factory Null | Photographer Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 1. 基本設定 --- */
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            margin: 0;
+            color: #333;
+            line-height: 1.8;
+            background-color: #fff;
+            scroll-behavior: smooth;
+        }
+        
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box; /* 幅の計算を修正 */
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo { 
+            font-size: 1.1rem; 
+            letter-spacing: 3px; 
+            font-weight: bold;
+            flex-shrink: 0; /* ロゴが潰れないように設定 */
+        }
+
+        nav { display: flex; align-items: center; }
+        nav a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: #444;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: #000; }
+
+        /* SNSアイコン共通設定 */
+        .nav-sns {
+            font-size: 1.1rem;
+            color: #333;
+            margin-left: 20px;
+            transition: transform 0.3s, color 0.3s;
+        }
+        .nav-sns:hover { transform: scale(1.2); }
+
+        /* 個別カラー設定 */
+        .nav-instagram:hover { color: #E1306C; }
+        .nav-line:hover { color: #06C755; }
+
+        /* --- 2. ヒーローセクション --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: sliderFade 9s linear infinite;
+        }
+
+        .hero-slider::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 2;
+        }
+
+        .slide:nth-child(1) { animation-delay: 0s; }
+        .slide:nth-child(2) { animation-delay: 2s; }
+        .slide:nth-child(3) { animation-delay: 4s; }
+
+        @keyframes sliderFade {
+            0% { opacity: 0; transform: scale(1.0); }
+            5% { opacity: 1; }
+            33% { opacity: 1; }
+            38% { opacity: 0; transform: scale(1.05); }
+            100% { opacity: 0; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            animation: heroFadeIn 2s ease-out forwards;
+        }
+
+        .hero h1 { 
+            font-size: clamp(2.5rem, 10vw, 5.5rem); 
+            letter-spacing: 12px; 
+            font-weight: 200;
+            text-shadow: 0 4px 25px rgba(0,0,0,0.5);
+            margin: 0;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 0.8rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            z-index: 10;
+        }
+        .scroll-down::after {
+            content: "";
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, #fff, transparent);
+            margin-top: 10px;
+            animation: scrollLine 2s infinite;
+        }
+
+        @keyframes heroFadeIn {
+            0% { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* --- 3. セクション共通 --- */
+        section { padding: 120px 8%; }
+        h2 { 
+            text-align: center; 
+            margin-bottom: 80px; 
+            font-weight: 200; 
+            letter-spacing: 8px; 
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        /* --- 4. ABOUT --- */
+        .about-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 60px;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .about-img { flex: 1; min-width: 300px; }
+        .about-img img { width: 100%; height: auto; border-radius: 2px; }
+        
+        .about-text { flex: 1.2; min-width: 300px; }
+        .name-container { margin-bottom: 35px; }
+        .name-en { display: block; font-size: 0.8rem; letter-spacing: 4px; color: #999; text-transform: uppercase; }
+        .name-jp { display: block; font-size: 2.5rem; font-weight: 500; letter-spacing: 2px; color: #000; }
+
+        .equipment-list { margin-top: 40px; padding-top: 30px; border-top: 1px solid #eee; }
+        .equipment-list h4 { font-size: 0.75rem; letter-spacing: 2px; color: #999; text-transform: uppercase; margin-bottom: 20px; }
+        .equipment-category { margin-bottom: 20px; }
+        .equipment-category span { display: block; font-size: 0.65rem; color: #bbb; text-transform: uppercase; margin-bottom: 8px; }
+        .equipment-list ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 25px; }
+        .equipment-list li { font-size: 0.85rem; color: #666; font-family: 'Georgia', serif; font-style: italic; }
+
+        /* --- 5. GALLERY --- */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .gallery-item { position: relative; overflow: hidden; height: 500px; text-decoration: none; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .gallery-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; transition: background 0.5s; }
+        .gallery-item h3 { color: #fff; font-size: 1.4rem; letter-spacing: 5px; text-transform: uppercase; font-weight: 300; position: relative; padding-bottom: 10px; }
+        .gallery-item h3::after { content: ""; position: absolute; bottom: 0; left: 50%; width: 0; height: 1px; background: #fff; transition: all 0.4s; transform: translateX(-50%); }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-item:hover .gallery-overlay { background: rgba(0, 0, 0, 0.4); }
+        .gallery-item:hover h3::after { width: 100%; }
+
+        /* --- 6. CASE STUDIES --- */
+        .case-study { display: flex; align-items: flex-start; gap: 50px; margin-bottom: 40px; background: #fafafa; padding: 40px; flex-wrap: wrap; }
+        .case-link-container { flex: 1; min-width: 300px; overflow: hidden; }
+        .case-img { width: 100%; height: 350px; object-fit: cover; transition: transform 0.6s ease; }
+        .case-link-container:hover .case-img { transform: scale(1.03); }
+        .case-text { flex: 1.5; min-width: 300px; }
+        .case-text h3 { font-size: 1.4rem; margin-top: 0; font-weight: 400; letter-spacing: 1px; }
+        .read-more { display: inline-flex; align-items: center; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; color: #000; text-decoration: none; margin-top: 20px; }
+        .read-more::after { content: '→'; margin-left: 10px; transition: 0.3s; }
+        .read-more:hover::after { margin-left: 18px; }
+
+        /* --- 7. PRICE --- */
+        .price-container { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .price-card { border: 1px solid #eee; padding: 50px 40px; text-align: center; flex: 1; max-width: 350px; background: #fff; transition: 0.3s; }
+        .price-card:hover { border-color: #000; }
+        .price-card h3 { font-size: 1rem; letter-spacing: 3px; margin-bottom: 30px; text-transform: uppercase; color: #999; }
+        .price-card .amount { font-size: 2.2rem; font-weight: bold; color: #000; display: block; margin-bottom: 30px; }
+        .price-card ul { list-style: none; padding: 0; font-size: 0.85rem; color: #666; line-height: 2.5; }
+
+        /* --- 8. CONTACT --- */
+        .contact-section { background-color: #fcfcfc; }
+        .contact-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            text-align: center;
+        }
+        .contact-intro {
+            margin-bottom: 50px;
+            font-size: 0.9rem;
+            color: #666;
+            padding: 0 5%;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-card {
+            background: #fff;
+            padding: 40px 30px;
+            flex: 1;
+            min-width: 250px;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-color: #333;
+        }
+
+        .contact-card i {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-card h3 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .contact-card p {
+            font-size: 0.75rem;
+            color: #888;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* アイコン個別カラー */
+        .card-line i { color: #06C755; }
+        .card-instagram i { color: #E1306C; }
+        .card-email i { color: #333; }
+
+        /* LINE強調用 */
+        .card-line {
+            border: 1px solid rgba(6, 199, 85, 0.2);
+            background: linear-gradient(to bottom, #fff, #f9fffb);
+        }
+
+        /* --- 9. FOOTER --- */
+        footer { background: #000; color: #fff; text-align: center; padding: 100px 5%; }
+        .footer-sns { margin-bottom: 40px; }
+        .footer-sns a { color: #fff; font-size: 1.4rem; margin: 0 20px; text-decoration: none; opacity: 0.6; transition: 0.3s; }
+        .footer-sns a:hover { opacity: 1; }
+        .footer-sns a.line-link:hover { color: #06C755; }
+        .copyright { font-size: 0.65rem; color: #555; letter-spacing: 2px; }
+
+        /* --- 10. スマホ・タブレット用修正 --- */
+        @media (max-width: 768px) {
+            section { padding: 80px 5%; }
+            header { padding: 1.2rem 4%; }
+            
+            /* メニュー見切れ防止対策 */
+            nav a { 
+                margin-left: 12px; 
+                font-size: 0.65rem; 
+                letter-spacing: 1px;
+            }
+            .nav-sns {
+                margin-left: 12px;
+                font-size: 1rem;
+            }
+
+            .hero h1 { font-size: 3.2rem; letter-spacing: 6px; }
+
+            /* 画像の縦長・縦スクロール増加対策 */
+            .gallery { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+            .gallery-item { height: 280px; } /* ギャラリー画像の高さをスマホ向けに調整 */
+            
+            .case-study { padding: 25px; gap: 25px; }
+            .case-img { height: 220px; } /* ケーススタディ画像の高さをスマホ向けに調整 */
+            
+            .contact-methods { gap: 15px; }
+            .contact-card { padding: 30px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            /* さらに小さい画面でのメニュー調整 */
+            nav a { margin-left: 8px; font-size: 0.6rem; }
+            .nav-sns { margin-left: 8px; }
+            .logo { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Null</div>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#portfolio">Gallery</a>
+        <a href="#cases">Cases</a>
+        <a href="#price">Price</a>
+        <a href="#contact">Contact</a>
+<!--
+        <a href="https://instagram.com/is0352rh" target="_blank" class="nav-sns nav-instagram">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://lin.ee/Ssf72Qg" target="_blank" class="nav-sns nav-line">
+            <i class="fa-brands fa-line"></i>
+        </a>
+-->
+    </nav>
+</header>
+
+<div class="hero">
+    <div class="hero-slider">
+        <div class="slide" style="background-image: url('/Users/is0352rh/Desktop/NEW_HP/photo/NEX5R.jpg');"></div>
+        <div class="slide" style="background-image: url('/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_7.jpeg');"></div>
+        <div class="slide" style="background-image: url('/Users/is0352rh/Desktop/NEW_HP/photo/tokyo_tower.jpg');"></div>
+    </div>
+    
+    <div class="hero-content">
+        <h1>PHOTO FACTORY Null</h1>
+        <p>Taizo's Photography</p>
+    </div>
+    <div class="scroll-down">Scroll</div>
+</div>
+
+<section id="about">
+    <h2>About Me</h2>
+    <div class="about-container">
+        <div class="about-img">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/profile02.JPEG" alt="岸本 泰蔵">
+        </div>
+        <div class="about-text">
+            <div class="name-container">
+                <span class="name-en">Kishimoto Taizo</span>
+                <span class="name-jp">岸本 泰蔵</span>
+            </div>
+            <p>東京・埼玉・千葉を拠点に活動するフリーランスカメラマン。 何気ない日常から人生の大切な瞬間まで、あなたの思い出を残すお手伝いをさせてください。</p>
+            <p>日帰り可能な範囲で撮影依頼を受け付けております。カット数や撮影のイメージ、その他気になることがあれば、お気軽にご相談ください。お見積り、ご相談のみも可能です。</p>
+            <p>Instagram（<a href="https://instagram.com/is0352rh" target="_blank" style="color:#000;">@is0352rh</a>）では、日々の撮影風景や最新作も公開しています。</p>
+            <div class="equipment-list">
+                <h4>Equipment</h4>
+                <div class="equipment-category">
+                    <span>Cameras</span>
+                    <ul>
+                        <li>Sony α7Ⅳ</li>
+                        <li>Canon EOS 1300D</li>
+                        <li>DJI Osmo Pocket 3</li>
+                    </ul>
+                </div>
+                <div class="equipment-category">
+                    <span>Lenses</span>
+                    <ul>
+                        <li>Tamron 35-150mm F/2-2.8</li>
+                        <li>Canon EF50mm F1.8 II</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="portfolio">
+    <h2>GALLERY</h2>
+    <div class="gallery">
+        <a href="portrait.html" class="gallery-item">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/portrait_7.jpg" alt="Portrait">
+            <div class="gallery-overlay"><h3>Portrait</h3></div>
+        </a>
+        <a href="motorcycle.html" class="gallery-item">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_19.jpeg" alt="Motorcycle">
+            <div class="gallery-overlay"><h3>Motorcycle</h3></div>
+        </a>
+        <a href="food.html" class="gallery-item">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/foods_1.jpg" alt="Food">
+            <div class="gallery-overlay"><h3>Food</h3></div>
+        </a>
+    </div>
+</section>
+
+<section id="cases">
+    <h2>CASE STUDIES</h2>
+    <div class="case-study">
+        <div class="case-link-container">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/case01_01.jpeg" class="case-img" alt="Annual Birthday Session">
+        </div>
+        <div class="case-text">
+            <h3>Annual Birthday Session: 1st & 2nd</h3>
+            <p>
+                1歳と2歳の節目に、2年続けてご依頼いただいたバースデーフォトの事例です
+            </p>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: #888;">
+                <i class="fa-solid fa-location-dot"></i> 流山おおたかの森エリア / 公園・室内パーク
+            </div>
+            <a href="case-detail-01.html" class="read-more">View Details</a>
+        </div>
+    </div>
+
+    <div class="case-study">
+        <div class="case-link-container">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_20.jpeg" class="case-img" alt="Car Photography in Kyoto">
+        </div>
+        <div class="case-text">
+            <h3>Autumn Drive Portrait: Arashiyama-Takao</h3>
+            <p>
+                秋の京都・高雄パークウェイにて、紅葉を背景にした愛車撮影を実施。
+                
+            </p>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: #888;">
+                <i class="fa-solid fa-location-dot"></i> 京都 高雄パークウェイ / 紅葉ロケーション
+            </div>
+            <a href="case-detail-02.html" class="read-more">View Details</a>
+        </div>
+    </div>        
+</section>
+
+<section id="price">
+    <h2>PRICE</h2>
+    <div class="price-container">
+        <div class="price-card">
+            <h3>Photo Plan</h3>
+            <span class="amount">¥15,000</span>
+            <ul>
+                <li><strong>1時間 / 20枚以上納品</strong></li>
+                <li>基本レタッチ込</li>
+                <li style="border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px; font-size: 0.75rem; color: #888;">
+                    【延長オプション】<br>
+                    30分毎：+¥5,000（+10枚納品）
+                </li>
+                <li style="font-size: 0.7rem; color: #aaa; line-height: 1.4; margin-top: 10px;">
+                    ※交通費・場所代は別途頂戴いたします
+                </li>
+            </ul>
+        </div>
+
+        <div class="price-card">
+            <h3>Retouch Plan</h3>
+            <span class="amount" style="font-size: 1.2rem;">¥3,000 <small style="font-size: 0.8rem; color: #999;">〜</small></span>
+            <ul style="text-align: left; padding: 0 10px;">
+                <li style="display: flex; justify-content: space-between;">
+                    <span>1〜20枚</span>
+                    <strong>¥3,000</strong>
+                </li>
+                <li style="display: flex; justify-content: space-between; border-top: 1px dotted #eee;">
+                    <span>21〜40枚</span>
+                    <strong>¥5,000</strong>
+                </li>
+                <li style="display: flex; justify-content: space-between; border-top: 1px dotted #eee;">
+                    <span>41〜60枚</span>
+                    <strong>¥6,600</strong>
+                </li>
+                
+                <li style="background: #f9f9f9; padding: 15px; margin-top: 20px; border-radius: 4px; line-height: 1.5;">
+                    <span style="font-size: 0.65rem; color: #999; display: block; margin-bottom: 5px; letter-spacing: 1px;">PRICE BREAKDOWN</span>
+                    <p style="font-size: 0.75rem; color: #666; margin: 0;">
+                        ・最初の20枚：¥150/枚<br>
+                        ・追加20枚迄：¥100/枚<br>
+                        ・以降20枚毎：¥80/枚
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="contact-section">
+    <h2>CONTACT</h2>
+    <div class="contact-container">
+        <div class="contact-intro">
+            <p>撮影のご依頼、お見積り、ご相談は各SNSのDMまたはメールにて承っております。<br>
+            <strong>公式LINEからのご連絡が最もスムーズです。</strong>お気軽にお問い合わせください。</p>
+        </div>
+
+        <div class="contact-methods">
+            <a href="https://lin.ee/Ssf72Qg" target="_blank" class="contact-card card-line">
+                <i class="fa-brands fa-line"></i>
+                <h3>Official LINE</h3>
+                <p>ご相談・お見積りはこちらから<br>一番早く返信可能です</p>
+            </a>
+
+            <a href="https://instagram.com/is0352rh" target="_blank" class="contact-card card-instagram">
+                <i class="fa-brands fa-instagram"></i>
+                <h3>Instagram DM</h3>
+                <p>ポートフォリオも随時更新中<br>DMからも受け付けております</p>
+            </a>
+
+            <a href="mailto:is0352rh@gmail.com" class="contact-card card-email">
+                <i class="fa-regular fa-envelope"></i>
+                <h3>Email</h3>
+                <p>is0352rh@gmail.com<br>24時間受付中</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-sns">
+        <a href="https://instagram.com/is0352rh" target="_blank">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://lin.ee/Ssf72Qg" target="_blank" class="line-link">
+            <i class="fa-brands fa-line"></i>
+        </a>
+    </div>
+    <p class="copyright">&copy; 2026 TAIZO KISHIMOTO. ALL RIGHTS RESERVED.</p>
+</footer>
+
+</body>
+</html>

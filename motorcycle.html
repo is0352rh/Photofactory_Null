@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motorcycle | Photography Portfolio</title>
+    <style>
+        /* --- 1. 基本設定 --- */
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+            margin: 0;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%; /* 修正: 100%にして計算を安定化 */
+            box-sizing: border-box; 
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo { font-weight: bold; letter-spacing: 2px; text-decoration: none; color: #000; font-size: 1.1rem; }
+
+        .back-link {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: #000; }
+
+        /* --- 2. コンテンツエリア --- */
+        main {
+            margin-top: 80px;
+            padding-bottom: 60px;
+        }
+
+        .page-header {
+            padding: 40px 5%;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 200;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .category-desc {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0 10px;
+        }
+
+        /* --- 3. フォトギャラリー (Masonry) --- */
+        .work-grid {
+            column-count: 3;
+            column-gap: 10px;
+            padding: 0 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .work-item {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+
+        .work-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: zoom-in;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        .work-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .work-item img:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        /* --- 4. 拡大表示（ライトボックス） --- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            animation: fadeIn 0.4s ease;
+            cursor: default;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 35px;
+            cursor: pointer;
+            z-index: 2100;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 15px;
+            user-select: none;
+            transition: color 0.3s, opacity 0.3s;
+            opacity: 0.5;
+            z-index: 2100;
+        }
+        .nav-btn:hover { opacity: 1; }
+        .prev-btn { left: 5px; }
+        .next-btn { right: 5px; }
+
+        /* --- 5. レスポンシブ --- */
+        @media (max-width: 1024px) { 
+            .work-grid { column-count: 2; } 
+        }
+
+        @media (max-width: 600px) {
+            /* スマホで2列表示を強制し、スクロールを削減 */
+            .work-grid { column-count: 2; } 
+            
+            .page-header h1 { font-size: 1.6rem; letter-spacing: 4px; }
+            .nav-btn { font-size: 30px; padding: 10px; }
+            
+            header { padding: 1rem 4%; }
+            .logo { font-size: 0.75rem; letter-spacing: 1px; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.65rem;
+            color: #aaa;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">Null</a>
+    <a href="index.html" class="back-link">← Back</a>
+</header>
+
+<main>
+    <section class="page-header">
+        <h1>Motorcycle</h1>
+        <p class="category-desc">
+            ディテールに宿る美しさと、マシンの鼓動を写し出す。<br>
+            走り抜ける風の記憶。
+        </p>
+    </section>
+
+    <div class="work-grid">
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_1.jpeg" alt="Work 01"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_2.jpeg" alt="Work 02"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_3.jpeg" alt="Work 03"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_4.jpeg" alt="Work 04"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_5.jpeg" alt="Work 05"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_6.jpeg" alt="Work 06"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_7.jpeg" alt="Work 07"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_8.jpeg" alt="Work 08"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_9.jpeg" alt="Work 09"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_10.jpeg" alt="Work 10"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_11.jpeg" alt="Work 11"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_12.jpeg" alt="Work 12"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_13.jpeg" alt="Work 13"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_14.jpeg" alt="Work 14"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_15.jpeg" alt="Work 15"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_16.jpeg" alt="Work 16"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_17.jpeg" alt="Work 17"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_18.jpeg" alt="Work 18"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_19.jpeg" alt="Work 19"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_20.jpeg" alt="Work 20"></div>
+        <div class="work-item"><img src="/Users/is0352rh/Desktop/NEW_HP/photo/motorcycle_21.jpeg" alt="Work 21"></div>
+    </div>
+</main>
+
+<div id="lightbox" class="lightbox">
+    <span class="close-btn">&times;</span>
+    <span class="nav-btn prev-btn">&#10094;</span> 
+    <img class="lightbox-content" id="lightbox-img" src="" alt="">
+    <span class="nav-btn next-btn">&#10095;</span> 
+</div>
+
+<footer>
+    &copy; 2026 TAIZO KISHIMOTO. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const images = Array.from(document.querySelectorAll('.work-item img'));
+    const closeBtn = document.querySelector('.close-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    let currentIndex = 0;
+
+    const showImage = (index) => {
+        if (index < 0) index = images.length - 1;
+        if (index >= images.length) index = 0;
+        
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+    };
+
+    images.forEach((image, index) => {
+        image.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightbox.style.display = 'flex';
+            showImage(index);
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    const closeLightbox = () => {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    closeBtn.addEventListener('click', closeLightbox);
+    
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target.classList.contains('lightbox')) {
+            closeLightbox();
+        }
+    });
+
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showImage(currentIndex + 1);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.style.display === 'flex') {
+            if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+            if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+            if (e.key === 'Escape') closeLightbox();
+        }
+    });
+</script>
+
+</body>
+</html>

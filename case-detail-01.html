@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study | Annual Birthday Session - Photo Factory Null</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 1. 基本設定 --- */
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            margin: 0;
+            color: #333;
+            line-height: 1.6;
+            background-color: #fff;
+        }
+
+        header {
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 90%;
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo { font-weight: bold; letter-spacing: 2px; text-decoration: none; color: #000; font-size: 1.1rem; }
+            
+                        
+        .back-link {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        /* --- 2. 記事レイアウト --- */
+        article {
+            max-width: 1000px;
+            margin: 100px auto 40px;
+            padding: 0 5%;
+        }
+
+        .post-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .post-category {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #999;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .section-description {
+            max-width: 700px;
+            margin: 0 auto 25px;
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+        }
+
+        /* --- 3. フォトグリッド（レスポンシブ対応） --- */
+        .photo-section {
+            margin-bottom: 80px;
+        }
+
+        .photo-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        /* 1st 上段：PCは3列 / スマホは2列 */
+        .grid-1st-top {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* 1st 下段：PCは2枚を中央寄せ / スマホは2列 */
+        .grid-1st-bottom {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 66%; /* PCでのバランス調整 */
+            margin: 0 auto;
+        }
+
+        /* 2nd：PCは5列 / スマホは2列 */
+        .grid-2nd {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        /* 共通：画像設定 */
+        .photo-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 2px;
+            background: #f9f9f9;
+        }
+
+        /* 縦横比の固定（どの画面でも形を維持） */
+        .img-landscape { aspect-ratio: 3 / 2; }
+        .img-portrait { aspect-ratio: 2 / 3; }
+
+        /* --- 4. ボタン / フッター --- */
+        .nav-buttons { text-align: center; margin: 60px 0; }
+        .btn-back {
+            display: inline-block; padding: 12px 40px; border: 1px solid #000;
+            color: #000; text-decoration: none; font-size: 0.7rem;
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+        }
+        .btn-back:hover { background: #000; color: #fff; }
+
+        footer { background: #000; padding: 40px; text-align: center; font-size: 0.6rem; color: #666; letter-spacing: 2px; }
+
+        /* --- 5. スマホ・タブレット用調整（ここが重要） --- */
+        @media (max-width: 768px) {
+            article { margin-top: 80px; padding: 0 15px; }
+            h1 { font-size: 1.5rem; }
+
+            /* 全てのグリッドを2列に統一 */
+            .grid-1st-top, 
+            .grid-1st-bottom, 
+            .grid-2nd {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 100%; /* スマホでは中央寄せ解除 */
+                gap: 8px; /* スマホでは隙間を少し狭く */
+            }
+
+            /* 1st上段の3枚目など、奇数枚の時に最後を1枚全幅にしたい場合は以下を有効に（お好みで） */
+            /* .grid-1st-top img:last-child { grid-column: span 2; } */
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="index.html" class="logo">Null</a>
+    <a href="index.html" class="back-link">← Back</a>
+</header>
+        
+<article>
+    <div class="post-header">
+        <span class="post-category">#バースデーフォト #親子撮影</span>
+        <h1>Annual Birthday Session: 1st & 2nd</h1>
+        <span class="post-date">2025.10.13</span>
+    </div>
+
+    <div class="photo-section">
+        <p>
+            「雨天でも安心な室内パーク」と「開放感のある公園ロケ」を組み合わせ、お子様の成長と個性に合わせた最適な撮影プランをご提案
+            <br>
+            <br>
+        </p>
+        
+                <h2 class="section-title">1st Birthday - Park Portrait</h2>
+        <div class="section-description">
+            <p>
+                1歳時は公園での親子ポートレートを中心に
+            </p>
+        </div>
+        
+        <div class="photo-grid grid-1st-top">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/case01_01.jpeg" alt="横1" class="img-landscape">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/case01_02.jpeg" alt="横2" class="img-landscape">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/case01_05.jpeg" alt="横3" class="img-landscape">
+        </div>
+        
+        <div class="photo-grid grid-1st-bottom">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/case01_03.jpeg" alt="縦1" class="img-portrait">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/case01_04.jpeg" alt="縦2" class="img-portrait">
+        </div>
+    </div>
+
+    <div class="photo-section">
+        <h2 class="section-title">2nd Birthday - Active Play</h2>
+        <div class="section-description">
+            <p>2歳時は「コトエ流山おおたかの森」内のピュアキッズも交え、よりアクティブなソロショットを撮影</p>
+        </div>
+        <div class="photo-grid grid-2nd">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/portrait_22.jpg" alt="縦1" class="img-portrait">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/portrait_23.jpg" alt="縦2" class="img-portrait">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/portrait_24.jpg" alt="縦3" class="img-portrait">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/portrait_25.jpg" alt="縦4" class="img-portrait">
+            <img src="/Users/is0352rh/Desktop/NEW_HP/photo/portrait_26.jpg" alt="縦5" class="img-portrait">
+        </div>
+    </div>
+
+    <div class="section-description" style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px;">
+                <p>毎年、同じご家族の成長を記録させていただけることは、カメラマンとしてこの上ない喜びです。<br>また来年、お会いできるのを楽しみにしています。</p>
+    </div>
+</article>
+
+<div class="nav-buttons">
+    <a href="index.html#cases" class="btn-back">Back to Cases</a>
+</div>
+
+<footer>
+    <p>&copy; 2026 TAIZO KISHIMOTO. ALL RIGHTS RESERVED.</p>
+</footer>
+
+</body>
+</html>
