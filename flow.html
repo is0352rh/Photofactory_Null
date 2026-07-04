@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow | 撮影の流れ - Photo Factory Null</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 1. 基本設定（共通） --- */
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            margin: 0;
+            color: #333;
+            line-height: 1.7;
+            background-color: #fff;
+        }
+
+        header {
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 90%;
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo { font-weight: bold; letter-spacing: 2px; text-decoration: none; color: #000; font-size: 1.1rem; }
+        
+        .back-link {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        /* --- 2. メインレイアウト --- */
+        main {
+            max-width: 750px;
+            margin: 120px auto 60px;
+            padding: 0 5%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+        }
+
+        .page-subtitle {
+            font-size: 0.8rem;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        /* --- 3. フロー（縦並び・省スペースデザイン） --- */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* カード同士の間隔を狭めてコンパクトに */
+            margin-top: 30px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* 左側：イラスト・番号エリア */
+        .step-visual-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            margin-right: 24px;
+        }
+
+        .step-badge {
+            background: #000;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .step-icon {
+            width: 54px;
+            height: 54px;
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+        }
+
+        .step-icon i {
+            font-size: 1.3rem;
+        }
+
+        /* 右側：コンテンツ詳細 */
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            letter-spacing: 0.5px;
+            color: #111;
+        }
+
+        .step-text {
+            font-size: 0.85rem;
+            color: #555;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .step-notes {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            padding-left: 0;
+            list-style-type: none;
+            line-height: 1.4;
+        }
+
+        .step-notes li::before {
+            content: "※ ";
+        }
+
+        /* --- 4. コンタクトボタン / フッター --- */
+        .cta-section {
+            text-align: center;
+            margin: 60px 0 30px;
+            border-top: 1px solid #eee;
+            padding-top: 45px;
+        }
+
+        .cta-title {
+            font-size: 1.05rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .btn-contact {
+            display: inline-block;
+            padding: 14px 45px;
+            border: 1px solid #000;
+            color: #000;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            background: #fff;
+        }
+
+        .btn-contact:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        footer {
+            background: #000;
+            padding: 35px;
+            text-align: center;
+            font-size: 0.6rem;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        /* --- 5. スマホ専用の極小化（縦並びを維持しつつスクロール削減） --- */
+        @media (max-width: 768px) {
+            main {
+                margin-top: 95px;
+                padding: 0 15px;
+            }
+
+            .page-header {
+                margin-bottom: 25px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            /* カード内のパディングを詰める */
+            .flow-step {
+                padding: 16px 14px;
+                gap: 12px;
+            }
+
+            /* スマホでも左右2カラムを維持。幅をさらにコンパクトに */
+            .step-visual-box {
+                min-width: 55px;
+                margin-right: 0;
+            }
+
+            .step-badge {
+                font-size: 0.6rem;
+                padding: 1px 6px;
+                margin-bottom: 8px;
+            }
+
+            .step-icon {
+                width: 44px;
+                height: 44px;
+            }
+
+            .step-icon i {
+                font-size: 1.1rem;
+            }
+
+            /* テキストサイズをわずかに調整して行数を減らす */
+            .step-title {
+                font-size: 0.95rem;
+                margin-bottom: 6px;
+            }
+
+            .step-text {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
+
+            .step-notes {
+                font-size: 0.7rem;
+                margin-top: 6px;
+            }
+
+            .cta-section {
+                margin-top: 40px;
+                padding-top: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">Null</a>
+    <a href="index.html" class="back-link">← Back</a>
+</header>
+
+<main>
+    <div class="page-header">
+        <h1 class="page-title">Service Flow</h1>
+        <div class="page-subtitle">ご予約から納品までの流れ</div>
+    </div>
+
+    <div class="flow-container">
+        
+        <!-- Step 01 -->
+        <div class="flow-step">
+            <div class="step-visual-box">
+                <span class="step-badge">01</span>
+                <div class="step-icon"><i class="fa-regular fa-comment-dots"></i></div>
+            </div>
+            <div class="step-content">
+                <h2 class="step-title">お問い合わせ・ご予約</h2>
+                <p class="step-text">
+                    当ウェブサイトのコンタクトフォーム、または公式LINEよりお気軽にお問い合わせください。ご希望の日時、撮影場所、撮影プラン（家族写真、バースデーなど）をお伺いします。
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 02 -->
+        <div class="flow-step">
+            <div class="step-visual-box">
+                <span class="step-badge">02</span>
+                <div class="step-icon"><i class="fa-regular fa-calendar-check"></i></div>
+            </div>
+            <div class="step-content">
+                <h2 class="step-title">ヒアリング・お打ち合わせ</h2>
+                <p class="step-text">
+                    メールやSNSメッセージにて、具体的な撮影イメージやご要望、衣装、当日のスケジュールについてすり合わせを行います。「こんな雰囲気で撮りたい」など、何でもご相談ください。
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 03 -->
+        <div class="flow-step">
+            <div class="step-visual-box">
+                <span class="step-badge">03</span>
+                <div class="step-icon"><i class="fa-solid fa-camera-retro"></i></div>
+            </div>
+            <div class="step-content">
+                <h2 class="step-title">撮影当日</h2>
+                <p class="step-text">
+                    現地で合流し、リラックスした雰囲気で撮影を開始します。お子様のペースやご家族の自然な表情を大切にしながら、時間をかけて丁寧にシャッターを切っていきます。
+                </p>
+                <ul class="step-notes">
+                    <li>雨天時は、前日のウェザーチェックを基にご相談させていただきます。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 04 -->
+        <div class="flow-step">
+            <div class="step-visual-box">
+                <span class="step-badge">04</span>
+                <div class="step-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            </div>
+            <div class="step-content">
+                <h2 class="step-title">写真セレクト・現像補正</h2>
+                <p class="step-text">
+                    撮影したすべてのカットからベストな写真を厳選し、1枚ずつ丁寧に色調や明るさの補正（レタッチ）を施します。クオリティを最優先に仕上げるため、少々お時間をいただきます。
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 05 -->
+        <div class="flow-step">
+            <div class="step-visual-box">
+                <span class="step-badge">05</span>
+                <div class="step-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+            </div>
+            <div class="step-content">
+                <h2 class="step-title">オンライン納品</h2>
+                <p class="step-text">
+                    撮影日より約2週間〜3週間以内に、高画質なデジタルデータとしてオンライン（Googleフォト等）にて納品いたします。スマホやPCから簡単にダウンロードしていただけます。
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="cta-section">
+        <h3 class="cta-title">大切な瞬間を、色褪せない記憶に。</h3>
+        <a href="index.html#contact" class="btn-contact">Book a Session</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 TAIZO KISHIMOTO. ALL RIGHTS RESERVED.</p>
+</footer>
+
+</body>
+</html>

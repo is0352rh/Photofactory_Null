@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Studio & Product Photography | Photo Factory Null</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 1. 基本設定 --- */
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            margin: 0;
+            color: #333;
+            line-height: 1.8;
+            background-color: #fff;
+        }
+
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo a { 
+            font-size: 1.1rem; 
+            letter-spacing: 3px; 
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+
+        nav a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: #444;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* --- 2. メインコンテンツ --- */
+        main {
+            margin-top: 100px;
+            padding: 40px 8% 100px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: #000; }
+        .back-link i { margin-right: 8px; }
+
+        .case-header {
+            margin-bottom: 60px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 40px;
+        }
+
+        .case-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .case-title {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin: 0 0 20px 0;
+            line-height: 1.4;
+        }
+
+        /* --- 3. セクションスタイル --- */
+        .project-section {
+            margin-bottom: 80px;
+        }
+
+        .project-meta {
+            background: #fafafa;
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+        }
+
+        .project-meta h3 {
+            margin-top: 0;
+            font-weight: 400;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .project-meta ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .project-meta ul li {
+            margin-bottom: 8px;
+            display: flex;
+        }
+
+        .project-meta ul li strong {
+            width: 120px;
+            color: #333;
+            flex-shrink: 0;
+        }
+
+        .visit-btn {
+            display: inline-flex;
+            align-items: center;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+        .visit-btn:hover { background: #333; }
+        .visit-btn i { margin-left: 8px; font-size: 0.7rem; }
+
+        /* --- 4. フォトギャラリー (Masonry) --- */
+        .image-gallery {
+            column-count: 3;
+            column-gap: 10px; /* 隙間を参考コードに合わせ調整 */
+            padding: 0;
+        }
+
+        .gallery-card {
+            break-inside: avoid;
+            display: inline-block; /* 配置の崩れ防止 */
+            width: 100%;
+            margin-bottom: 10px; /* 隙間を参考コードに合わせ調整 */
+            background-color: #f9f9f9;
+            overflow: hidden;
+            border-radius: 2px;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: zoom-in;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .gallery-card img:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        /* --- 5. 拡大表示（ライトボックス） --- */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- 6. レスポンシブ（スマホ対応の最適化） --- */
+        @media (max-width: 1024px) {
+            main { padding: 30px 4% 80px; margin-top: 80px; }
+            .case-title { font-size: 1.6rem; }
+            .image-gallery { column-count: 2; } /* タブレットで2列 */
+        }
+
+        @media (max-width: 600px) {
+            /* スマホでも2列のレンガ状レイアウトを維持してスクロールを軽減 */
+            .image-gallery { column-count: 2; } 
+            
+            .project-meta { padding: 20px; }
+            .project-meta ul li { flex-direction: column; margin-bottom: 12px; }
+            .project-meta ul li strong { margin-bottom: 2px; }
+            
+            header { padding: 1rem 4%; }
+            .logo a { font-size: 0.9rem; }
+            nav a { font-size: 0.65rem; margin-left: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo"><a href="index.html#cases">Null</a></div>
+    <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#portfolio">Gallery</a>
+        <a href="index.html#cases">Cases</a>
+        <a href="index.html#contact">Contact</a>
+    </nav>
+</header>
+
+<main>
+    <a href="index.html#cases" class="back-link"><i class="fa-solid fa-arrow-left"></i> BACK TO CASE STUDIES</a>
+
+    <div class="case-header">
+        <span class="case-category">Studio & Product Photography</span>
+        <h1 class="case-title">空間・プロダクト撮影（85studio 様 / RY-ST 様）</h1>
+    </div>
+
+    <!-- セクション1：85studio様 -->
+    <section class="project-section">
+        <div class="project-meta">
+            <h3>85studio スタジオ紹介写真</h3>
+            <ul>
+                <li><strong>Client</strong> 85studio 様</li>
+                <li><strong>Category</strong> インバウンド・レンタルスタジオ / 空間撮影</li>
+                <li><strong>Description</strong> ハウススタジオの内観・機材レイアウト、光の入り方を可視化する紹介用写真の撮影。</li>
+            </ul>
+            <a href="https://www.aid-std.com/85studio" target="_blank" class="visit-btn">Website <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+
+        <div class="image-gallery">
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_14.JPG" alt="85studio 01"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_15.JPG" alt="85studio 02"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_16.JPG" alt="85studio 03"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_17.JPG" alt="85studio 04"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_18.JPG" alt="85studio 05"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_19.JPG" alt="85studio 06"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_20.JPG" alt="85studio 07"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_21.JPG" alt="85studio 08"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_22.JPG" alt="85studio 09"></div>
+        </div>
+    </section>
+
+    <!-- セクション2：RY-ST様 -->
+    <section class="project-section">
+        <div class="project-meta">
+            <h3>RY-ST: Secret Oasis BLACK MONSTERA 50mL</h3>
+            <ul>
+                <li><strong>Brand</strong> RY-ST様</li>
+                <li><strong>Product</strong> Secret Oasis BLACK MONSTERA 50mL</li>
+                <li><strong>Category</strong> プロダクト撮影 / フレグランス商材</li>
+                <li><strong>Description</strong> ブランドの世界観、ボトルの質感、高級感を伝えるためのEC・プロモーション用プロダクト撮影。</li>
+            </ul>
+            <a href="https://www.ryst.jp/items/139011980" target="_blank" class="visit-btn">Product Page <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+
+        <div class="image-gallery">
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_01.JPG" alt="RY-ST 01"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_02.JPG" alt="RY-ST 02"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_03.JPG" alt="RY-ST 03"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_04.JPG" alt="RY-ST 04"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_05.JPG" alt="RY-ST 05"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_06.JPG" alt="RY-ST 06"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_07.JPG" alt="RY-ST 07"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_08.JPG" alt="RY-ST 08"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_09.JPG" alt="RY-ST 09"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_10.JPG" alt="RY-ST 10"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_11.JPG" alt="RY-ST 11"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_12.JPG" alt="RY-ST 12"></div>
+            <div class="gallery-card" onclick="openLightbox(this)"><img src="img/case_04/case_04_13.JPG" alt="RY-ST 13"></div>
+        </div>
+    </section>
+</main>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Enlarged Image">
+</div>
+
+<script>
+    function openLightbox(element) {
+        const imgSrc = element.querySelector('img').src;
+        document.getElementById('lightbox-img').src = imgSrc;
+        document.getElementById('lightbox').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+</script>
+
+</body>
+</html>
