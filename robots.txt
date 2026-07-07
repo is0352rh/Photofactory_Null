@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://is0352rh.github.io/Photofactory_Null/sitemap.xml
